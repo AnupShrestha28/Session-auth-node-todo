@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo Application</title>
+</head>
+<body>
+    <h1>Todo Application</h1>
+
+    <form action="/logout" method="get">
+        <button type="submit">Logout</button>
+    </form> <br>
+
+    <form action="/add-todo" method="post">
+        <input type="text" name="todo" placeholder="Enter your todo">
+        <button type="submit">Add</button>
+    </form>
+
+    <% if (typeof errorMessage !== 'undefined' && errorMessage.length > 0) { %>
+        <p style="color: red;"><%= errorMessage %></p>
+    <% } %>
+
+    <ul>
+        <% items.forEach((element, index) => { %>
+            <li <% if (element.completed) { %>
+                class="completed"
+            <% } %>>
+                <%= element.title %>
+
+                <form action="/delete-todo/<%= element.id %>" name="delete-todo" method="post" style="display: inline;">
+                    <button type="submit">Delete</button>
+                </form>
+
+                <form action="/edit-todo/<%= element.id %>" method="get" style="display: inline;">
+                    <input type="hidden" name="todoId" value="<%= element.id %>">
+                    <button type="submit">Edit</button>
+                </form>
+            </li>
+        <% }) %>
+    </ul>
+
+    <% if (editTodo) { %>
+        <h2>Edit Todo</h2>
+        <form action="/update-todo" method="post">
+            <input type="hidden" name="todoId" value="<%= editTodo.id %>">
+            <input type="text" name="updateTodo" value="<%= editTodo.title %>">
+            <button type="submit">Update</button>
+        </form>
+    <% } %>
+</body>
+</html>
